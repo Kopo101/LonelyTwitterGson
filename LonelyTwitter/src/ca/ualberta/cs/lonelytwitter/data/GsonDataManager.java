@@ -1,7 +1,9 @@
 package ca.ualberta.cs.lonelytwitter.data;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
+import ca.ualberta.cs.lonelytwitter.Summary;
 import ca.ualberta.cs.lonelytwitter.Tweet;
 
 import com.google.gson.Gson;
@@ -17,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class GsonDataManager implements IDataManager {
 
-	private static final String FILENAME = "gsonfile.sav";
+	private static final String FILENAME = "gsonfile1.sav";
 
 	private Gson gson;
 	private Context ctx;
@@ -64,5 +67,26 @@ public class GsonDataManager implements IDataManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void saveSummary(Summary sum) {
+		FileOutputStream fos;
+		try
+		{
+			fos = ctx.openFileOutput("summary.sav",
+					Context.MODE_PRIVATE);
+			String jsonSummary = gson.toJson(sum);
+			fos.write(jsonSummary.getBytes());
+			fos.close();
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
